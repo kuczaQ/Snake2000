@@ -10,3 +10,5 @@ function setPixel(x, y, r, g, b, image) {
 		}
 	}
 }
+
+var DIRECTION = Object.freeze({UP: 0, DOWN: 1, LEFT: 2, RIGHT: 3});

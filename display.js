@@ -30,6 +30,8 @@ class Display {
 	}
 
 	initBoard() {
+		let color = {r: 0, g: 0, b: 0, a: 255};
+
 		this.background.loadPixels();
 		for (let x = 5; x < this.pixelWidth - 4; x++) {
 			for (let y = 11; y < this.pixelHeight - 4; y++) {
@@ -38,7 +40,7 @@ class Display {
 					|| y == 11
 					|| y == this.pixelHeight - 5) {
 
-					setPixel(x, y, 0, 0, 0, this.background);
+					setPixel(x, y, color, this.background);
 				}
 			}
 		}
@@ -87,15 +89,17 @@ class Display {
 	}
 
 	prepareHead(x, y) {
-		setPixel(x, y+1, 0, 0, 0, this.board);
-		setPixel(x+1, y+1, 0, 0, 0, this.board);
-		setPixel(x+2, y+1, 0, 0, 0, this.board);
-		setPixel(x+3, y+1, 0, 0, 0, this.board);
-		setPixel(x+4, y+1, 0, 0, 0, this.board);
-		setPixel(x+1, y, 0, 0, 0, this.board);
-		setPixel(x+3, y, 0, 0, 0, this.board);
-		setPixel(x+4, y, 0, 0, 0, this.board);
-		setPixel(x+2, y-1, 0, 0, 0, this.board);
+		let color = {r: 0, g: 0, b: 0, a: 255};
+
+		setPixel(x, y+1, color, this.board);
+		setPixel(x+1, y+1, color, this.board);
+		setPixel(x+2, y+1, color, this.board);
+		setPixel(x+3, y+1, color, this.board);
+		setPixel(x+4, y+1, color, this.board);
+		setPixel(x+1, y, color, this.board);
+		setPixel(x+3, y, color, this.board);
+		setPixel(x+4, y, color, this.board);
+		setPixel(x+2, y-1, color, this.board);
 	}
 }
 

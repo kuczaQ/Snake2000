@@ -38,8 +38,10 @@ class Snake {
 
 	draw(display) {
 		display.loadBoardPixels();
+		let color = {r: 0, g: 0, b: 0, a: 255};
 		this.body.forEach(pos => {
-			display.prepareHead(pos.x, pos.y);
+			this.prepareHead(pos.x, pos.y, color, display.getBoard());  // TODO use this convetion
+			//display.prepareHead(pos.x, pos.y);
 		});
 			
 		display.updateBoardPixels();
@@ -52,5 +54,17 @@ class Snake {
 		});
 			
 		display.updateBoardPixels();
+	}
+
+	prepareHead(x, y, color, canvas) {
+		setPixel(x, y+1, color, canvas);
+		setPixel(x+1, y+1, color, canvas);
+		setPixel(x+2, y+1, color, canvas);
+		setPixel(x+3, y+1, color, canvas);
+		setPixel(x+4, y+1, color, canvas);
+		setPixel(x+1, y, color, canvas);
+		setPixel(x+3, y, color, canvas);
+		setPixel(x+4, y, color, canvas);
+		setPixel(x+2, y-1, color, canvas);
 	}
 }

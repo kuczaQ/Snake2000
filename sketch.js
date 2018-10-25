@@ -8,10 +8,10 @@ let direction = null;
 
 
 function setup() {
-
+	frameRate(5);
 	createCanvas(window.innerWidth, window.innerHeight);
 	display = new Display(window.innerWidth, window.innerHeight);
-	snake  = new Snake(5,5);
+	snake   = new Snake(5,5);
 	//canvas = display.canvas;
 }
 
@@ -20,9 +20,15 @@ function draw() {
 		display.init();
 		initiated = true;
 	}
+	//background(255);
 
+	//display.clearBoard();
+	display.loadBoardPixels();
+	snake.clear(display);
 	snake.update(direction);
 	snake.draw(display);
+	display.updateBoardPixels();
+
 	display.draw();
 	// background(178,220,2);
 	// fill(0);

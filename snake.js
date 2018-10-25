@@ -6,7 +6,8 @@ class Snake {
 						{x: startX, y: startY+4},
 						{x: startX, y: startY+8},
 						{x: startX, y: startY+12}
-					]
+					];
+		this.lastDeleted = null;
 	}
 
 	update(direction) {
@@ -33,27 +34,30 @@ class Snake {
 		let newBody = {x: this.body[0].x + vector.x, y: this.body[0].y + vector.y};
 
 		this.body.unshift(newBody);
-		this.body.pop();
+		this.lastDeleted = this.body.pop();
 	}
 
 	draw(display) {
-		display.loadBoardPixels();
+
 		let color = {r: 0, g: 0, b: 0, a: 255};
 		this.body.forEach(pos => {
 			this.prepareHead(pos.x, pos.y, color, display.getBoard());  // TODO use this convetion
-			//display.prepareHead(pos.x, pos.y);
 		});
 			
-		display.updateBoardPixels();
+
 	}
 	
 	clear(display) {
-		display.loadBoardPixels();
+		//display.loadBoardPixels();
+		let color = Display.backgroundColor;
 		this.body.forEach(pos => {
-			display.clearHead(pos.x, pos.y);
+			this.prepareHead(pos.x, pos.y, color, display.getBoard());
 		});
+
+		// if (this.lastDeleted != null)
+		// 	this.prepareHead(this.lastDeleted.x, this.lastDeleted.y, color, display.getBoard());
 			
-		display.updateBoardPixels();
+		//display.updateBoardPixels();
 	}
 
 	prepareHead(x, y, color, canvas) {

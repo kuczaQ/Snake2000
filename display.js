@@ -13,6 +13,12 @@ class Display {
 		this.board       = createImage(this.boardWidth, this.boardHeight);
 
 		this.background  = createImage(this.pixelWidth, this.pixelHeight);
+		this.playboard   = createImage(this.pixelWidth, this.pixelHeight);
+		this.boardClear   = createImage(this.boardWidth, this.boardHeight);
+	}
+
+	clearBoard() {
+		this.board = createImage(this.boardWidth, this.boardHeight);
 	}
 
 	getBoard() {
@@ -76,6 +82,7 @@ class Display {
 			noSmooth();
 			scale(Display.pixelSize);
 			image(this.background, 0, 0);
+			//image(this.playboard, 0, 0);
 			image(this.board, this.boardX, this.boardY);
 		pop();
 	}
@@ -87,25 +94,12 @@ class Display {
 	updateBoardPixels() {
 		this.board.updatePixels();
 	}
-
-	prepareHead(x, y) {
-		let color = {r: 0, g: 0, b: 0, a: 255};
-
-		setPixel(x, y+1, color, this.board);
-		setPixel(x+1, y+1, color, this.board);
-		setPixel(x+2, y+1, color, this.board);
-		setPixel(x+3, y+1, color, this.board);
-		setPixel(x+4, y+1, color, this.board);
-		setPixel(x+1, y, color, this.board);
-		setPixel(x+3, y, color, this.board);
-		setPixel(x+4, y, color, this.board);
-		setPixel(x+2, y-1, color, this.board);
-	}
 }
 
 Display.backgroundColor = {
 							r: 178,
 							g: 220,
-							b: 2
+							b: 2,
+							a: 255
 						  };
 Display.pixelSize = 10;

@@ -2,73 +2,85 @@ class Snake {
 	constructor(startX, startY) {
 		this.length = 4;
 		this.body = [
-						{x: startX, y: startY},
-						{x: startX, y: startY+4},
-						{x: startX, y: startY+8},
-						{x: startX, y: startY+12}
+						new SnakeBody(startX, startY, DIRECTION.UP),
+						new SnakeBody(startX, startY + 4, DIRECTION.UP),
+						new SnakeBody(startX, startY + 8, DIRECTION.UP),
+						new SnakeBody(startX, startY + 12, DIRECTION.UP)
 					];
-		this.lastDeleted = null;
+		this.lastDirection = DIRECTION.UP;
 	}
 
 	update(direction) {
 		let vector = {x: 0, y: 0};
+		let step = Snake.STEP_LENGHT;
+
 
 		switch (direction) {
 			case DIRECTION.UP: {
-				vector.y = -1;
+				// switch (this.lastDirection) {
+				// 	case DIRECTION.LEFT:
+				// 	case DIRECTION.RIGHT:
+				// 		step = 2;
+				// }
+				vector.y = -step;
 			} break;
 			
 			case DIRECTION.DOWN: {
-				vector.y = 1;
+				switch (this.lastDirection) {
+					case DIRECTION.RIGHT: {
+						//step = 2;
+						vector.x = -2;
+					} break;
+
+				}
+				vector.y = step;;
+
 			} break;
 			
 			case DIRECTION.LEFT: {
-				vector.x = -1;
+				
+				vector.x = -step;
 			} break;
 
 			case DIRECTION.RIGHT: {
-				vector.x = 1;
+				vector.x = step;
 			} break;
 		}
 
-		let newBody = {x: this.body[0].x + vector.x, y: this.body[0].y + vector.y};
+		let newBody = this.body[0].getNew(vector, direction);
 
 		this.body.unshift(newBody);
 		this.lastDeleted = this.body.pop();
+		this.lastDirection = direction;
 	}
 
 	draw(display) {
-
-		let color = {r: 0, g: 0, b: 0, a: 255};
+		let head = true;
+		
 		this.body.forEach(pos => {
-			this.prepareHead(pos.x, pos.y, color, display.getBoard());  // TODO use this convetion
+			if (head) {
+				pos.drawHead(display.getBoard());
+				head = false;
+			}
+			pos.drawBody(display.getBoard());
+			//this.prepareHead(pos.x, pos.y, display.getBoard());  // TODO use this convetion
 		});
 			
 
 	}
 	
 	clear(display) {
-		//display.loadBoardPixels();
 		let color = Display.backgroundColor;
+		let head = true;
 		this.body.forEach(pos => {
-			this.prepareHead(pos.x, pos.y, color, display.getBoard());
+			if (head) {
+				pos.drawHead(display.getBoard(), true);
+				head = false;
+			}
+			pos.drawBody(display.getBoard(), true);
+			//this.prepareHead(pos.x, pos.y, display.getBoard(), true);
 		});
-
-		// if (this.lastDeleted != null)
-		// 	this.prepareHead(this.lastDeleted.x, this.lastDeleted.y, color, display.getBoard());
-			
-		//display.updateBoardPixels();
-	}
-
-	prepareHead(x, y, color, canvas) {
-		setPixel(x, y+1, color, canvas);
-		setPixel(x+1, y+1, color, canvas);
-		setPixel(x+2, y+1, color, canvas);
-		setPixel(x+3, y+1, color, canvas);
-		setPixel(x+4, y+1, color, canvas);
-		setPixel(x+1, y, color, canvas);
-		setPixel(x+3, y, color, canvas);
-		setPixel(x+4, y, color, canvas);
-		setPixel(x+2, y-1, color, canvas);
 	}
 }
+
+Snake.STEP_LENGHT = 4;

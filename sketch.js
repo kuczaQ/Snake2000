@@ -5,13 +5,15 @@ let initiated = false;
 
 let snake= null;
 let direction = null;
-
+let running = false;
 
 function setup() {
 	frameRate(5);
 	createCanvas(window.innerWidth, window.innerHeight);
 	display = new Display(window.innerWidth, window.innerHeight);
-	snake   = new Snake(5,5);
+	let centre = display.getCentre();
+	snake   = new Snake(centre.x, centre.y);
+	noLoop();
 	//canvas = display.canvas;
 }
 
@@ -37,6 +39,11 @@ function draw() {
 }
 
 function keyPressed() {
+	if (!running) {
+		loop();
+		running = true;
+	}
+
 	if (keyCode === LEFT_ARROW) {
 		direction = DIRECTION.LEFT;
 	} else if (keyCode === RIGHT_ARROW) {
@@ -45,5 +52,15 @@ function keyPressed() {
 		direction = DIRECTION.UP;
 	} else if (keyCode === DOWN_ARROW) {
 		direction = DIRECTION.DOWN;
+	}
+}
+
+function mousePressed() {
+	if (running) {
+		noLoop();
+		running = false;
+	} else {
+		loop();
+		running = true;
 	}
 }

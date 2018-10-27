@@ -17,6 +17,10 @@ class Display {
 		this.boardClear   = createImage(this.boardWidth, this.boardHeight);
 	}
 
+	getCentre() {
+		return {x: floor(this.boardWidth/2), y: floor(this.boardHeight/2)};
+	}
+
 	clearBoard() {
 		this.board = createImage(this.boardWidth, this.boardHeight);
 	}
@@ -28,7 +32,7 @@ class Display {
 	init() {
 		push();
 			noStroke();
-			fill(Display.backgroundColor.r, Display.backgroundColor.g, Display.backgroundColor.b);
+			fill(Display.BACKGROUND_COLOR.r, Display.BACKGROUND_COLOR.g, Display.BACKGROUND_COLOR.b);
 			rect(0, 0, this.width, this.height);
 		pop();
 
@@ -36,8 +40,6 @@ class Display {
 	}
 
 	initBoard() {
-		let color = {r: 0, g: 0, b: 0, a: 255};
-
 		this.background.loadPixels();
 		for (let x = 5; x < this.pixelWidth - 4; x++) {
 			for (let y = 11; y < this.pixelHeight - 4; y++) {
@@ -46,7 +48,7 @@ class Display {
 					|| y == 11
 					|| y == this.pixelHeight - 5) {
 
-					setPixel(x, y, color, this.background);
+					setPixel(x, y, this.background);
 				}
 			}
 		}
@@ -96,7 +98,7 @@ class Display {
 	}
 }
 
-Display.backgroundColor = {
+Display.BACKGROUND_COLOR = {
 							r: 178,
 							g: 220,
 							b: 2,

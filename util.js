@@ -19,11 +19,11 @@ function setPixel(x, y, image, clear = false) {
 }
 
 function drawSquare(x, y, canvas, clear = false) {
-	setPixel(x    , y - 1, canvas, clear);
+	setPixel(x    , y + 1, canvas, clear);
 	setPixel(x    , y    , canvas, clear);
 	setPixel(x + 1, y    , canvas, clear);
-	setPixel(x + 1, y - 1, canvas, clear);
+	setPixel(x + 1, y + 1, canvas, clear);
 }
 
-var DIRECTION = Object.freeze({UP: 0, DOWN: 1, LEFT: 2, RIGHT: 3});
-var BLACK     = Object.freeze({r: 0, g: 0, b: 0, a: 255});
+const DIRECTION = Object.freeze({UP: 0, DOWN: 1, LEFT: 2, RIGHT: 3});
+const BLACK     = Object.freeze({r: 0, g: 0, b: 0, a: 255});

@@ -3,26 +3,28 @@ class Display {
 		this.width  = width;
 		this.height = height;
 		
-		this.pixelWidth  = (int) (width/Display.pixelSize);
-		this.pixelHeight = (int) (height/Display.pixelSize);
+		this.pixelWidth  = floor(width/Display.pixelSize);
+		this.pixelHeight = floor(height/Display.pixelSize);
 
 		this.boardX      = 6;
 		this.boardY      = 12;
 		this.boardWidth  = this.pixelWidth  - 11;
 		this.boardHeight = this.pixelHeight - 17;
+
+		if (this.boardWidth % 2 != 0)
+			this.boardWidth--;
+			
+		if (this.boardHeight % 2 != 0)
+			this.boardHeight--;
+
 		this.board       = createImage(this.boardWidth, this.boardHeight);
 
 		this.background  = createImage(this.pixelWidth, this.pixelHeight);
-		this.playboard   = createImage(this.pixelWidth, this.pixelHeight);
-		this.boardClear   = createImage(this.boardWidth, this.boardHeight);
+		this.boardClear  = createImage(this.boardWidth, this.boardHeight);
 	}
 
 	getCentre() {
 		return {x: floor(this.boardWidth/2), y: floor(this.boardHeight/2)};
-	}
-
-	clearBoard() {
-		this.board = createImage(this.boardWidth, this.boardHeight);
 	}
 
 	getBoard() {
@@ -53,28 +55,6 @@ class Display {
 			}
 		}
 		this.background.updatePixels();
-
-		let h = 0;
-		this.board.loadPixels();
-		for (let x = 0; x < this.boardWidth; x++) {
-			for (let y = 0; y < this.boardHeight; y++) {
-				//setPixel(x, y, 255, h++ % 2 == 0? 0 : 255, 127, this.board);
-			}
-		}
-
-		// let x = 5, y = 5;
-
-		// setPixel(x, y+1, 0, 0, 0, this.board);
-		// setPixel(x+1, y+1, 0, 0, 0, this.board);
-		// setPixel(x+2, y+1, 0, 0, 0, this.board);
-		// setPixel(x+3, y+1, 0, 0, 0, this.board);
-		// setPixel(x+4, y+1, 0, 0, 0, this.board);
-		// setPixel(x+1, y, 0, 0, 0, this.board);
-		// setPixel(x+3, y, 0, 0, 0, this.board);
-		// setPixel(x+4, y, 0, 0, 0, this.board);
-		// setPixel(x+2, y-1, 0, 0, 0, this.board);
-
-		this.board.updatePixels();
 	}
 
 
@@ -84,7 +64,6 @@ class Display {
 			noSmooth();
 			scale(Display.pixelSize);
 			image(this.background, 0, 0);
-			//image(this.playboard, 0, 0);
 			image(this.board, this.boardX, this.boardY);
 		pop();
 	}
@@ -105,3 +84,4 @@ Display.BACKGROUND_COLOR = {
 							a: 255
 						  };
 Display.pixelSize = 10;
+Display.GRID_SIZE = 2;

@@ -1,47 +1,148 @@
+/**
+ * Jesus fukn Christ..., if you have to read, let alone understand this, I pity you.
+ */
 class SnakeBody {
-	constructor(x, y, direction) {
+	constructor(x, y, direction, lastDirection) {
 		this.x = x;
 		this.y = y;
 		this.direction = direction;
+		this.lastDirection = lastDirection;
 	}
 
 	drawHead(canvas, clear = false) {
-		setPixel(this.x, this.y+1, canvas, clear);
-		setPixel(this.x+1, this.y+1, canvas, clear);
-		setPixel(this.x+2, this.y+1, canvas, clear);
-		setPixel(this.x+3, this.y+1, canvas, clear);
-		setPixel(this.x+4, this.y+1, canvas, clear);
-		setPixel(this.x+1, this.y, canvas, clear);
-		setPixel(this.x+3, this.y, canvas, clear);
-		setPixel(this.x+4, this.y, canvas, clear);
-		setPixel(this.x+2, this.y-1, canvas, clear);
-	}
+		let posScaled = {x: this.x * Display.GRID_SIZE, y: this.y * Display.GRID_SIZE};
 
-	drawBody(canvas, clear = false) {
+		drawSquare(posScaled.x, posScaled.y, canvas, clear);
+
 		switch (this.direction) {
 			case DIRECTION.UP: {
-				drawSquare(this.x, this.y + 2, canvas, clear);
-				drawHorizontalSwivel(this.x, this.y + 4, canvas, clear);
+				drawVerticalSwivel(posScaled.x, posScaled.y + Display.GRID_SIZE, canvas, clear);
+				switch (this.lastDirection) {
+					case DIRECTION.RIGHT:
+					case DIRECTION.UP: {
+						drawVerticalSwivel(posScaled.x, posScaled.y + Display.GRID_SIZE * 2, canvas, clear);
+					} break;
+				
+					default: {
+						drawHorizontalSwivel(posScaled.x, posScaled.y + Display.GRID_SIZE * 2, canvas, clear);
+					}
+				}
+				setPixel(posScaled.x - 1, posScaled.y + 2, canvas, clear);
+				setPixel(posScaled.x + 1, posScaled.y + 3, canvas, clear);	
 			} break;
 			
 			case DIRECTION.DOWN: {
-				drawSquare(this.x, this.y, canvas, clear);
-				drawHorizontalSwivel(this.x, this.y - 2, canvas, clear);
+				drawVerticalSwivel(posScaled.x, posScaled.y - Display.GRID_SIZE, canvas, clear);
+				switch (this.lastDirection) {
+					case DIRECTION.LEFT: {
+						drawVerticalSwivel(posScaled.x, posScaled.y - Display.GRID_SIZE * 2, canvas, clear);
+						
+					} break;
+				
+					default: {
+						drawHorizontalSwivel(posScaled.x, posScaled.y - Display.GRID_SIZE * 2, canvas, clear);
+					}
+				}
+				setPixel(posScaled.x + 2, posScaled.y - 1, canvas, clear);
+				setPixel(posScaled.x, posScaled.y - 2, canvas, clear);	
 			} break;
 			
-			case DIRECTION.LEFT: {
-				drawSquare(this.x, this.y, canvas, clear);
-				drawVerticalSwivel(this.x + 2, this.y, canvas, clear);
+			case DIRECTION.RIGHT: {
+				drawHorizontalSwivel(posScaled.x - Display.GRID_SIZE, posScaled.y, canvas, clear);
+				switch (this.lastDirection) {
+					case DIRECTION.RIGHT:
+					case DIRECTION.DOWN: {
+						drawHorizontalSwivel(posScaled.x - Display.GRID_SIZE * 2, posScaled.y, canvas, clear);
+					} break;
+				
+					default: {
+						drawVerticalSwivel(posScaled.x - Display.GRID_SIZE * 2, posScaled.y, canvas, clear);
+					}
+				}
+				setPixel(posScaled.x - 1, posScaled.y - 1, canvas, clear);
+				setPixel(posScaled.x - 2, posScaled.y + 1, canvas, clear);
 			} break;
 
-			case DIRECTION.RIGHT: {
-				drawSquare(this.x - 2, this.y, canvas, clear);
-				drawVerticalSwivel(this.x - 4, this.y, canvas, clear);
+			case DIRECTION.LEFT: {
+				drawVerticalSwivel(posScaled.x + Display.GRID_SIZE, posScaled.y, canvas, clear);
+				switch (this.lastDirection) {
+					case DIRECTION.UP: {
+						drawHorizontalSwivel(posScaled.x + Display.GRID_SIZE * 2, posScaled.y, canvas, clear);
+					} break;
+				
+					default: {
+						drawVerticalSwivel(posScaled.x + Display.GRID_SIZE * 2, posScaled.y, canvas, clear);
+					}
+				}
+				setPixel(posScaled.x + 2, posScaled.y - 1, canvas, clear);
+				setPixel(posScaled.x + 3, posScaled.y + 1, canvas, clear);	
 			} break;
 		}
 	}
 
-	getNew(vector, direction) {
-		return new SnakeBody(this.x + vector.x, this.y + vector.y, direction);
+	drawBody(canvas, clear = false) {
+		let posScaled = {x: this.x * Display.GRID_SIZE, y: this.y * Display.GRID_SIZE};
+
+		drawSquare(posScaled.x, posScaled.y, canvas, clear);
+
+		switch (this.direction) {
+			case DIRECTION.UP: {
+				switch (this.lastDirection) {
+					case DIRECTION.RIGHT:
+					case DIRECTION.UP: {
+						drawVerticalSwivel(posScaled.x, posScaled.y + Display.GRID_SIZE, canvas, clear);
+					} break;
+
+					default: {
+						drawHorizontalSwivel(posScaled.x, posScaled.y + Display.GRID_SIZE, canvas, clear);
+					}
+				}
+				
+			} break;
+			
+			case DIRECTION.DOWN: {
+				switch (this.lastDirection) {
+					case DIRECTION.LEFT: {
+						drawVerticalSwivel(posScaled.x, posScaled.y - Display.GRID_SIZE, canvas, clear);
+						
+					} break;
+				
+					default: {
+						drawHorizontalSwivel(posScaled.x, posScaled.y - Display.GRID_SIZE, canvas, clear);
+					}
+				}
+			} break;
+			
+			case DIRECTION.LEFT: {
+				switch (this.lastDirection) {
+					case DIRECTION.UP: {
+						drawHorizontalSwivel(posScaled.x + Display.GRID_SIZE, posScaled.y, canvas, clear);
+					} break;
+
+					default: {
+						drawVerticalSwivel(posScaled.x + Display.GRID_SIZE, posScaled.y, canvas, clear);
+					}
+				}
+				
+			} break;
+
+			case DIRECTION.RIGHT: {
+				switch (this.lastDirection) {
+					case DIRECTION.RIGHT:
+					case DIRECTION.DOWN: {
+						drawHorizontalSwivel(posScaled.x - Display.GRID_SIZE, posScaled.y, canvas, clear);
+					} break;
+
+					default: {
+						drawVerticalSwivel(posScaled.x - Display.GRID_SIZE, posScaled.y, canvas, clear);
+					}
+				}
+				
+			} break;
+		}
+	}
+
+	getNew(vector, direction, lastDirection) {
+		return new SnakeBody(this.x + vector.x, this.y + vector.y, direction, lastDirection);
 	}
 }
